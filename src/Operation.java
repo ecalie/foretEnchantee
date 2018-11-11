@@ -6,4 +6,11 @@ public class Operation {
      */
     private boolean ajouter;
 
+    public Fait getFait() {
+        return fait;
+    }
+
+    public boolean isAjouter() {
+        return ajouter;
+    }
 }

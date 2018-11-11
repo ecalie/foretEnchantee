@@ -1,5 +1,8 @@
 public enum Objet {
     Crevasse,
     Monstre,
-    Portail;
+    Portail,
+    Odeur,
+    Lumiere,
+    Vent;
 }

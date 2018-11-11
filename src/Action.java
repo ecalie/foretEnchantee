@@ -1,9 +1,12 @@
-public enum Action {
+public class Action {
+    private Type type;
+    private Direction direction;
 
-    Haut,
-    Bas,
-    Droite,
-    Gauche,
-    Sortir,
-    Tirer;
+    public Type getType() {
+        return type;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
 }
