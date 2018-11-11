@@ -21,8 +21,23 @@ public class Agent {
         this.moteur = new MoteurInference(this.croyances, _regles);
     }
 
+    public Case getPosition() {
+        return position;
+    }
+
+    public void setPosition(Case position) {
+        this.position = position;
+    }
+
+    public void setCroyances(BaseFaits croyances) {
+        this.croyances = croyances;
+    }
+
     public Action choixAction() {
         // Trouver une action sans risque
+        //      - chercher une case non visitée sans risque
+
+        //      - chercher un chemin
 
         // Sinon tirer une roche
 

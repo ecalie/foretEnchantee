@@ -45,22 +45,51 @@ public class Environnement {
 
     public void sortirAgent() {
         // Calculer le score
+        // TODO
 
         // Générer une map plus grande
+        this.genererMap(this.map.getTaille()+1);
 
         // Placer l'agent sur la map
+        this.agent.setPosition(this.map.getCase(0,0));
 
         // Réinitialiser les croyances de l'agent
+        this.agent.setCroyances(new BaseFaits());
     }
 
     public void deplacerAgent(Direction direction) {
         // Mettre à jour position agent
+        this.agent.setPosition(this.voisine(this.agent.getPosition(), direction));
     }
 
     public void tirer(Direction direction) {
+        // La case sur la quelle l'agent tire
+        Case visee = this.voisine(this.agent.getPosition(), direction);
+
         // Modifier l'état de la case concernée
+        if (visee.getObjet().contains(Objet.Monstre))
+            visee.getObjet().remove(Objet.Monstre);
 
         // Modifier score agent
+        // TODO
+    }
+
+    public Case voisine(Case laCase, Direction direction) {
+        int l = laCase.getLigne();
+        int c = laCase.getColonne();
+
+        switch(direction) {
+            case Haut:
+                return this.getCase(l-1, c);
+            case Bas :
+                return this.getCase(l+1, c);
+            case Gauche:
+                return this.getCase(l,c-1);
+            case Droite:
+                return this.getCase(l,c+1);
+            default:
+                return null;
+        }
     }
 
 }

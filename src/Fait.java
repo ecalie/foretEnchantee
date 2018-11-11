@@ -12,5 +12,33 @@ public class Fait {
      * Vrai la présence / absence est une certitude, faux si c'est une hypothèse.
      */
     private boolean certitude;
+
+    /**
+     * Monstre  ou crevasse.
+     */
     private Objet objet;
+
+    /////////////
+    // GETTERS //
+    /////////////
+
+    public Case getEmplacement() {
+        return emplacement;
+    }
+
+    public Case getCause() {
+        return cause;
+    }
+
+    public boolean isNegation() {
+        return negation;
+    }
+
+    public boolean isCertitude() {
+        return certitude;
+    }
+
+    public Objet getObjet() {
+        return objet;
+    }
 }

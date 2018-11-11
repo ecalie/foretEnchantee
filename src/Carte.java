@@ -9,6 +9,10 @@ public class Carte {
         this.lesCases = _cases;
     }
 
+    public int getTaille() {
+        return this.lesCases.length;
+    }
+
     public List<Case> voisines(Case laCase) {
         List<Case> res = new ArrayList<>();
         int l = laCase.getLigne();
