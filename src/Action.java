@@ -1,8 +1,8 @@
 public class Action {
-    private Type type;
+    private TypeAction type;
     private Direction direction;
 
-    public Type getType() {
+    public TypeAction getType() {
         return type;
     }
 
