@@ -16,7 +16,16 @@ public class Fait {
     /**
      * Monstre  ou crevasse ou lumière.
      */
-    private Objet objet;
+    private TypeFait type;
+
+    public Fait(Case emplacement, Case cause, boolean present, boolean certitude, TypeFait type) {
+        this.emplacement = emplacement;
+        this.cause = cause;
+        this.present = present;
+        this.certitude = certitude;
+        this.type = type;
+    }
+
 
     /////////////
     // GETTERS //
@@ -36,9 +45,5 @@ public class Fait {
 
     public boolean isCertitude() {
         return certitude;
-    }
-
-    public Objet getObjet() {
-        return objet;
     }
 }

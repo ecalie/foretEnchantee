@@ -6,6 +6,11 @@ public class Operation {
      */
     private boolean ajouter;
 
+    public Operation(Fait fait, boolean ajouter) {
+        this.fait = fait;
+        this.ajouter = ajouter;
+    }
+
     public Fait getFait() {
         return fait;
     }

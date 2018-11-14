@@ -6,12 +6,19 @@ public class RegleDeduction {
     private List<Operation> corps;
     private boolean marquee;
 
+    public RegleDeduction(List<Fait> _declencheurs, List<Operation> _corps) {
+        this.declencheurs = _declencheurs;
+        this.corps = _corps;
+        this.marquee = false;
+    }
+
+
     public List<Fait> getDeclencheurs() {
         return declencheurs;
     }
 
     public List<Operation> getCorps() {
-        return corps;
+        return this.corps;
     }
 
     public boolean estApplicable(BaseFaits base) {
@@ -20,11 +27,10 @@ public class RegleDeduction {
     }
 
     public boolean isMarquee() {
-        return marquee;
+        return this.marquee;
     }
 
-    public void marquer(){
-        marquee = true;
+    public void marquer() {
+        this.marquee = true;
     }
-
 }

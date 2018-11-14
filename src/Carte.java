@@ -30,6 +30,8 @@ public class Carte {
         return res;
     }
 
+    public Case[][] getLesCases() { return lesCases; }
+
     public Case getCase(int ligne, int colonne) {
         return this.lesCases[ligne][colonne];
     }
