@@ -15,6 +15,14 @@ public class Fait {
 
     private TypeFait type;
 
+    public Fait(Case _emplacement, Case _cause, boolean _negation, boolean _certitude, TypeFait _type) {
+        this.emplacement = _emplacement;
+        this.cause = _cause;
+        this.negation = _negation;
+        this.certitude = _certitude;
+        this.type = _type;
+    }
+
     /////////////
     // GETTERS //
     /////////////
