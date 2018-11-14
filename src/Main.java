@@ -1,3 +1,4 @@
+import java.rmi.server.RemoteRef;
 import java.util.ArrayList;
 
 public class Main {
@@ -7,11 +8,11 @@ public class Main {
         Environnement environnement = new Environnement(3);
 
         //initialiser les regles
-        //for chaque case
+        MoteurInference moteur = new MoteurInference(new BaseFaits(), environnement.getMap())
 
         // générer agent
         Agent agent = new Agent(environnement.getCase(0,0),
-                new ArrayList<>(),
+                moteur,
                 new Capteur(environnement),
                 new Effecteur(environnement));
 

@@ -15,6 +15,10 @@ public class Environnement {
         return this.map.getCase(ligne, colonne);
     }
 
+    public Carte getMap() {
+        return map;
+    }
+
     public void genererMap(int taille) {
         Case[][] cases = new Case[taille][taille];
         for (int ligne = 0; ligne < taille; ligne++) {
