@@ -45,6 +45,19 @@ public class Environnement {
                 else if (cases[ligne][colonne].getObjet().contains(Objet.Monstre))
                     for (Case c : map.voisines(cases[ligne][colonne]))
                         c.getObjet().add(Objet.Odeur);
+
+        // Générer le portail
+        boolean portail = false;
+        while (!portail) {
+            int ligne = (int) Math.random() * taille;
+            int colonne = (int) Math.random() * taille;
+
+            if (!cases[ligne][colonne].getObjet().contains(Objet.Crevasse) && !cases[ligne][colonne].getObjet().contains(Objet.Monstre)) {
+                portail = true;
+                cases[ligne][colonne].getObjet().add(Objet.Lumiere);
+            }
+        }
+
     }
 
     public void sortirAgent() {
@@ -52,13 +65,13 @@ public class Environnement {
         // TODO
 
         // Générer une map plus grande
-        this.genererMap(this.map.getTaille()+1);
+        this.genererMap(this.map.getTaille() + 1);
 
         // Placer l'agent sur la map
-        this.agent.setPosition(this.map.getCase(0,0));
+        this.agent.setPosition(this.map.getCase(0, 0));
 
         // Réinitialiser les croyances de l'agent
-        this.agent.setCroyances(new BaseFaits());
+        // TODO this.agent.setCroyances(new BaseFaits());
     }
 
     public void deplacerAgent(Direction direction) {
@@ -82,15 +95,15 @@ public class Environnement {
         int l = laCase.getLigne();
         int c = laCase.getColonne();
 
-        switch(direction) {
+        switch (direction) {
             case Haut:
-                return this.getCase(l-1, c);
-            case Bas :
-                return this.getCase(l+1, c);
+                return this.getCase(l - 1, c);
+            case Bas:
+                return this.getCase(l + 1, c);
             case Gauche:
-                return this.getCase(l,c-1);
+                return this.getCase(l, c - 1);
             case Droite:
-                return this.getCase(l,c+1);
+                return this.getCase(l, c + 1);
             default:
                 return null;
         }
