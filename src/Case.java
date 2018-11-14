@@ -23,4 +23,10 @@ public class Case {
     public List<Objet> getObjet() {
         return objet;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Case c2 = (Case) obj;
+        return (c2.ligne == this.ligne && c2.colonne == this.colonne);
+    }
 }
