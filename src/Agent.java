@@ -48,6 +48,8 @@ public class Agent {
 
     public void demarrer() {
         while (true) {
+            //Appeler le capteur -> ajouter faits
+
             // Execéute les règles applicables et mise à jour des croyances
             this.moteur.appliquerRegles();
 
