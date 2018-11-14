@@ -6,17 +6,14 @@ public class Fait {
     /**
      * Vrai si le fait est la présence l'objet, faux si le fait est l'absence de l'objet.
      */
-    private boolean present;
+    private boolean negation;
 
     /**
      * Vrai la présence / absence est une certitude, faux si c'est une hypothèse.
      */
     private boolean certitude;
 
-    /**
-     * Monstre  ou crevasse ou lumière.
-     */
-    private Objet objet;
+    private TypeFait type;
 
     /////////////
     // GETTERS //
@@ -30,15 +27,15 @@ public class Fait {
         return cause;
     }
 
-    public boolean isPresent() {
-        return present;
+    public boolean isNegation() {
+        return negation;
     }
 
     public boolean isCertitude() {
         return certitude;
     }
 
-    public Objet getObjet() {
-        return objet;
+    public TypeFait getType() {
+        return type;
     }
 }
