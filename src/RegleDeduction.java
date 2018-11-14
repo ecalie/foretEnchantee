@@ -15,15 +15,23 @@ public class RegleDeduction {
     }
 
     public boolean estApplicable(BaseFaits base) {
-        //Est-ce qu'on a tous les faits déclencheurs dans le base de fait
-        return false;
+        // Si la règle est marquée, est n'est pas applicable
+        if (this.marquee)
+            return false;
+
+        // Est-ce qu'on a tous les faits déclencheurs dans le base de faits
+        for (Fait f : this.declencheurs)
+            if (!base.contains(f))
+                return false;
+
+        return true;
     }
 
     public boolean isMarquee() {
         return marquee;
     }
 
-    public void marquer(){
+    public void marquer() {
         marquee = true;
     }
 
