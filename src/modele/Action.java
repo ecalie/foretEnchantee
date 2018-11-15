@@ -4,6 +4,11 @@ public class Action {
     private TypeAction type;
     private Direction direction;
 
+    public Action(TypeAction type, Direction direction) {
+        this.type = type;
+        this.direction = direction;
+    }
+
     public TypeAction getType() {
         return type;
     }
