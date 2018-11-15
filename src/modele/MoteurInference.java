@@ -93,17 +93,17 @@ public class MoteurInference {
     public void genererReglesNouvelleCarte(Carte map){
         int taille = map.getTaille();
         for (int t=0; t<taille; t++){
-            Case laCase = map.getCase(t,taille);
+            Case laCase = map.getCase(t,taille-1);
             genererReglesSurCase(laCase, map.voisines(laCase));
             if(t!=taille-1)
-                laCase = map.getCase(taille,t);
+                laCase = map.getCase(taille-1,t);
                 genererReglesSurCase(laCase, map.voisines(laCase));
         }
     }
 
     public void genererReglesSurCase(Case laCase, List<Case> voisines){
-        List<Fait> declencheurs = new ArrayList<Fait>();
-        List<Operation> corps = new ArrayList<Operation>();
+        List<Fait> declencheurs = new ArrayList<>();
+        List<Operation> corps = new ArrayList<>();
 
         for (TypeFait typeDeclencheur : TypeFait.values() ){
 
