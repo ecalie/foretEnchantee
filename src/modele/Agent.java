@@ -53,7 +53,7 @@ public class Agent {
     public void observer() {
         List<Objet> objets = this.capteur.getObjetCase(this.position);
         for (Objet o : objets)
-            this.croyances.add(new Fait(this.position, null, false, true, o.getTypeFait()));
+            this.croyances.add(new Fait(this.position, null, false, o.getTypeFait()));
     }
 
     public void demarrer() {
