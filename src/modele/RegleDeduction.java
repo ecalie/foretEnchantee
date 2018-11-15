@@ -43,4 +43,7 @@ public class RegleDeduction {
         marquee = true;
     }
 
+    public void Demarquer() {
+        this.marquee = false;
+    }
 }

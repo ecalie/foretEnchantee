@@ -14,8 +14,16 @@ public class Environnement {
         this.genererMap(taille);
     }
 
+    public Agent getAgent() {
+        return agent;
+    }
+
     public void setFenetre(Fenetre fenetre) {
         this.fenetre = fenetre;
+    }
+
+    public Fenetre getFenetre() {
+        return fenetre;
     }
 
     public void setAgent(Agent agent) {
@@ -103,10 +111,8 @@ public class Environnement {
         if(agentEstMortCeSoir()) {
             this.fenetre.mourir();
             this.agent.ajoutFait(new Fait(this.agent.getPosition(), null, true, TypeFait.Crevasse));
-
+            this.agent.getMemoire().remove(this.agent.getPosition());
             this.agent.setPosition(this.map.getCase(0, 0));
-
-            this.agent.resetMemoire();
         }
     }
 

@@ -19,10 +19,10 @@ public class ActionEffectuerCycle implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        //Case avant = this.agent.getPosition();
+        Case avant = this.agent.getPosition();
         this.agent.bouger();
 
-        //Case apres = this.agent.getPosition();
+        Case apres = this.agent.getPosition();
         this.fenetre.majPositionAgent();
     }
 }

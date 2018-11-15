@@ -10,7 +10,6 @@ public class Main {
         //initialiser les regles
         MoteurInference moteur = new MoteurInference(environnement.getMap(), null);
 
-        System.out.println("regles");
         // générer agent
         Agent agent = new Agent(environnement.getCase(0,0),
                 moteur,

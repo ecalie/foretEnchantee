@@ -29,4 +29,13 @@ public class BaseFaits extends ArrayList<Fait> {
         return false;
     }
 
+    @Override
+    public boolean remove(Object o) {
+        Fait f = (Fait) o;
+        if (this.contains(f)) {
+            super.remove(f);
+            return true;
+        }
+        return false;
+    }
 }

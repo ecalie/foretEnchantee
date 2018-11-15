@@ -7,7 +7,7 @@ public class Agent {
 
     private Case position;
     private List<Action> intentions;
-    private Objet desir;
+    private String but;
     private BaseFaits croyances;
     private Capteur capteur;
     private Effecteur effecteur;
@@ -19,7 +19,6 @@ public class Agent {
         this.capteur = _capteur;
         this.effecteur = _effecteur;
         this.intentions = new ArrayList<>();
-        this.desir = Objet.Lumiere;
         this.croyances = new BaseFaits();
         this.moteur = _moteur;
         this.moteur.setBaseDeFait(this.croyances);
@@ -39,24 +38,31 @@ public class Agent {
         this.position = position;
     }
 
-    public BaseFaits getCroyances() {
-        return croyances;
+    public List<Case> getMemoire() {
+        return memoire;
     }
 
     public void resetCroyances() {
         this.croyances.clear();
     }
 
+    public String getBut() {
+        return but;
+    }
+
     public void majIntention() {
         for (Fait f : this.croyances) {
             if (f.getType() == TypeFait.Lumiere) {
                 this.intentions.add(new Action(TypeAction.Sortir, null));
+                this.but = "Sortir";
                 return;
             }
         }
         for (Fait f : this.croyances) {
-            if (f.getType() == TypeFait.SansDanger) {
+            // Si la case est sans danger et que l'agent ne l'a pas déjà explorée
+            if (f.getType() == TypeFait.SansDanger && !this.memoire.contains(f.getEmplacement())) {
                 this.intentions = determinationDeplacements(f.getEmplacement());
+                this.but = "se déplacer en "+ f.getEmplacement();
                 return;
             }
         }
@@ -67,6 +73,7 @@ public class Agent {
                 this.croyances.remove(new Fait(f.getEmplacement(), null, false,TypeFait.Monstre));
                 this.croyances.remove(new Fait(f.getEmplacement(), null, true,TypeFait.Monstre));
                 this.intentions.add(new Action(TypeAction.Deplacer, determinationDirection(f.getCause(), f.getEmplacement())));
+                this.but = "tirer et se déplacer en " + f.getEmplacement();
                 if (!memoire.contains( f.getEmplacement()))
                     this.memoire.add( f.getEmplacement());
                 return;
@@ -75,6 +82,7 @@ public class Agent {
         for (Fait f : this.croyances) {
             if (f.getType() == TypeFait.Crevasse && !f.isCertitude()) {
                 this.intentions = determinationDeplacements(f.getEmplacement());
+                this.but = "se déplacer en " + f.getEmplacement();
                 return;
             }
         }
@@ -98,15 +106,14 @@ public class Agent {
         if (_position.getLigne() == _cible.getLigne() && _position.getColonne() == _cible.getColonne())
             return _chemin;
         else {
-            for (int i = 0; i < this.memoire.size(); i++) {
-                if (distance(_position, this.memoire.get(i)) == 1 && !_chemin.contains(new Case(this.memoire.get(i).getLigne(), this.memoire.get(i).getColonne()))) {
-                    _chemin.add(this.memoire.get(i));
-                    ArrayList<Case> res = exploration(this.memoire.get(i), _cible, _chemin);
-                    if (res == null) {
-                        _chemin.remove(this.memoire.get(i));
-                    } else {
+            for (Case c : memoire) {
+                if (distance(_position, c) == 1 && !_chemin.contains(c)) {
+                    _chemin.add(c);
+                    ArrayList<Case> res = exploration(c, _cible, _chemin);
+                    if (res == null)
+                        _chemin.remove(c);
+                    else
                         return res;
-                    }
                 }
             }
         }
@@ -157,13 +164,6 @@ public class Agent {
         } else {
             effecteur.executerAction(this.intentions.remove(0));
         }
-
-        System.out.println(this.position);
-
-    }
-
-    public void setMemoire(List<Case> memoire) {
-        this.memoire = memoire;
     }
 
     public void ajoutFait(Fait fait) {

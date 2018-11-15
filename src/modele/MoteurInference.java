@@ -29,8 +29,8 @@ public class MoteurInference {
 
         this.regles.clear();
 
-        for (int ligne = 0 ; ligne < 3 ; ligne++) {
-            for (int colonne = 0; colonne < 3; colonne++) {
+        for (int ligne = 0 ; ligne < map.getTaille() ; ligne++) {
+            for (int colonne = 0; colonne < map.getTaille(); colonne++) {
 
                 Case emplacement = map.getCase(ligne, colonne);
                 List<Case> voisines = map.voisines(emplacement);
@@ -65,7 +65,6 @@ public class MoteurInference {
                 regle = new RegleDeduction(faits, operations);
                 this.regles.add(regle);
 
-
                 ////////////////////////////////////////////////////////////////////////
                 // Règle  : SI vide                                                   //
                 //             ALORS les cases voisines sans danger                   //
@@ -81,29 +80,16 @@ public class MoteurInference {
                 regle = new RegleDeduction(faits, operations);
                 this.regles.add(regle);
 
-                ////////////////////////////////////////////////////////////////////////
-                // Règle  : SI sans danger ET exploree                                //
-                //             ALORS plus nécessaire d'être identifée "sans danger"   //
-                ////////////////////////////////////////////////////////////////////////
-                fait = new Fait(emplacement, null, true, TypeFait.Exploree);
-                faits = new ArrayList<>();
-                faits.add(fait);
-                fait = new Fait(emplacement, null, true, TypeFait.SansDanger);
-                faits.add(fait);
-                operations = new ArrayList<>();
-                Fait f = new Fait(emplacement, null, true, TypeFait.SansDanger);
-                operations.add(new Operation(f, false));
-                regle = new RegleDeduction(faits, operations);
-                this.regles.add(regle);
-
-                for (Case voisine : voisines) {
-                    fait = new Fait(voisine, null, true, TypeFait.Exploree);
+                ///////////////////////////////////////////////////////////////////////////////
+                // Règle  : SI sans (danger ou monstre ou crevasse potentiels) ET sansDanger //
+                //             ALORS on supprime  (danger ou monstre ou crevasse potentiels) //
+                ///////////////////////////////////////////////////////////////////////////////
+                for (TypeFait type : Arrays.asList(TypeFait.Monstre, TypeFait.Crevasse, TypeFait.SansDanger)) {
                     faits = new ArrayList<>();
-                    faits.add(fait);
-                    fait = new Fait(voisine, null, true, TypeFait.SansDanger);
-                    faits.add(fait);
+                    faits.add(new Fait(emplacement, null, true, TypeFait.Exploree));
+                    faits.add(new Fait(emplacement, null, type == TypeFait.SansDanger?true:false, type));
                     operations = new ArrayList<>();
-                    f = new Fait(voisine, null, true, TypeFait.SansDanger);
+                    Fait f = new Fait(emplacement, null, type == TypeFait.SansDanger?true:false, type);
                     operations.add(new Operation(f, false));
                     regle = new RegleDeduction(faits, operations);
                     this.regles.add(regle);
@@ -131,6 +117,9 @@ public class MoteurInference {
     }
 
     public void appliquerRegles() {
+        // démarquer toutes les règles
+        for (RegleDeduction r : this.regles)
+            r.Demarquer();
         boolean onBoucle=true;
         while (onBoucle) {
             onBoucle = false;
