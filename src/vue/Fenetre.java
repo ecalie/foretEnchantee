@@ -3,6 +3,7 @@ package vue;
 import controleur.ActionEffectuerCycle;
 import modele.Agent;
 import modele.Case;
+import modele.Environnement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +13,8 @@ public class Fenetre extends JFrame {
     private Case[][] lesCases;
     private Agent agent;
     private JPanel centre;
-    private JLabel nord;
-    private JLabel[][] casesPanels;
+    private JLabel nord1;
+    private JLabel nord2;
 
     public Fenetre(Case[][] lesCases, Agent agent) {
         super("Bienvenue dans la forête enchantée ...");
@@ -25,8 +26,12 @@ public class Fenetre extends JFrame {
         this.centre = new MapPanel(this.lesCases, this.agent);
         this.add(centre, BorderLayout.CENTER);
 
-        this.nord = new JLabel();
-        this.add(this.nord, BorderLayout.NORTH);
+        this.nord1 = new JLabel();
+        this.nord2 = new JLabel();
+        JPanel nord = new JPanel(new BorderLayout());
+        nord.add(nord1, BorderLayout.EAST);
+        nord.add(nord2, BorderLayout.WEST);
+        this.add(nord, BorderLayout.NORTH);
 
         JButton btn = new JButton("Effectuer un cycle");
         btn.addActionListener(new ActionEffectuerCycle(agent, this));
@@ -45,11 +50,12 @@ public class Fenetre extends JFrame {
     }
 
     public void mourir() {
-        this.nord.setText("Je suis mort");
+        this.nord1.setText("Je suis mort");
     }
 
-    public void majIntention(String intention) {
-        this.nord.setText(intention);
+    public void majIntention(String intention, Environnement env) {
+        this.nord1.setText(intention);
+        this.nord2.setText("score : " + env.getScoreAgent());
     }
 
 

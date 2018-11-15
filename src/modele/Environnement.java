@@ -9,9 +9,11 @@ public class Environnement {
     private Carte map;
     private Agent agent;
     private Fenetre fenetre;
+    private int scoreAgent;
 
     public Environnement(int taille) {
         this.genererMap(taille);
+        this.scoreAgent = 0;
     }
 
     ////////////////////////
@@ -24,6 +26,10 @@ public class Environnement {
 
     public void setFenetre(Fenetre fenetre) {
         this.fenetre = fenetre;
+    }
+
+    public int getScoreAgent() {
+        return scoreAgent;
     }
 
     public Fenetre getFenetre() {
@@ -94,7 +100,7 @@ public class Environnement {
      */
     public void sortirAgent() {
         // Calculer le score
-        // TODO
+        this.scoreAgent += this.getMap().getTaille() * this.getMap().getTaille();
 
         // Générer une map plus grande
         this.genererMap(this.map.getTaille() + 1);
@@ -122,6 +128,7 @@ public class Environnement {
         // Mettre à jour position agent
         this.agent.setPosition(this.voisine(this.agent.getPosition(), direction));
         if(agentEstMortCeSoir()) {
+            this.scoreAgent -= this.getMap().getTaille() * this.getMap().getTaille();
             this.fenetre.mourir();
             this.agent.ajoutFait(new Fait(this.agent.getPosition(), null, true, TypeFait.Crevasse));
             this.agent.getMemoire().remove(this.agent.getPosition());
@@ -151,7 +158,7 @@ public class Environnement {
             visee.getObjet().remove(Objet.Monstre);
 
         // Modifier score agent
-        // TODO
+        this.scoreAgent -= 10;
     }
 
     /**

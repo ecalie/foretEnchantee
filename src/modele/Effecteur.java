@@ -9,7 +9,7 @@ public class Effecteur {
     }
 
     public void executerAction(Action action) {
-        this.environnement.getFenetre().majIntention(this.environnement.getAgent().getBut());
+        this.environnement.getFenetre().majIntention(this.environnement.getAgent().getBut(), this.environnement);
         switch (action.getType()) {
             case Sortir:
                 environnement.sortirAgent();
