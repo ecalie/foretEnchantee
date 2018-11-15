@@ -10,6 +10,7 @@ public class MoteurInference {
 
     public MoteurInference(Carte map) {
         this.baseDeFait = new BaseFaits();
+        this.regles = new ArrayList<>();
         genererRegles(map);
     }
 
