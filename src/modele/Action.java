@@ -1,13 +1,16 @@
+package modele;
+
 public class Action {
-    private Type type;
+    private TypeAction type;
     private Direction direction;
 
-    public Action(Type type, Direction direction) {
+    public Action(TypeAction type, Direction direction) {
         this.type = type;
         this.direction = direction;
     }
 
     public Type getType() {
+    public TypeAction getType() {
         return type;
     }
 

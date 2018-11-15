@@ -1,3 +1,5 @@
+package modele;
+
 import java.util.List;
 
 public class Capteur {

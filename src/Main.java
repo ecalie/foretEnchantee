@@ -1,5 +1,5 @@
-import java.rmi.server.RemoteRef;
-import java.util.ArrayList;
+import modele.*;
+//import vue.Fenetre;
 
 public class Main {
 
@@ -8,8 +8,9 @@ public class Main {
         Environnement environnement = new Environnement(3);
 
         //initialiser les regles
-        MoteurInference moteur = new MoteurInference(new BaseFaits(), environnement.getMap())
+        MoteurInference moteur = new MoteurInference(environnement.getMap());
 
+        System.out.println("regles");
         // générer agent
         Agent agent = new Agent(environnement.getCase(0,0),
                 moteur,
@@ -18,6 +19,7 @@ public class Main {
 
         environnement.setAgent(agent);
 
+        //Fenetre f = new Fenetre(environnement.getMap().getLesCases(), agent);
         agent.demarrer();
     }
 }
