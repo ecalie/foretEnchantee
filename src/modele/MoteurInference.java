@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class MoteurInference {
 
@@ -95,6 +96,19 @@ public class MoteurInference {
                 regle = new RegleDeduction(faits, operations);
                 this.regles.add(regle);
 
+                for (Case voisine : voisines) {
+                    fait = new Fait(voisine, null, true, TypeFait.Exploree);
+                    faits = new ArrayList<>();
+                    faits.add(fait);
+                    fait = new Fait(voisine, null, true, TypeFait.SansDanger);
+                    faits.add(fait);
+                    operations = new ArrayList<>();
+                    f = new Fait(voisine, null, true, TypeFait.SansDanger);
+                    operations.add(new Operation(f, false));
+                    regle = new RegleDeduction(faits, operations);
+                    this.regles.add(regle);
+                }
+
                 ////////////////////////////////////////////////////////////////////////
                 // Règle  : SI fait incertain ET fait certain                         //
                 //             ALORS fait certain                                     //
@@ -126,7 +140,6 @@ public class MoteurInference {
                     r.marquer();
                     onBoucle = true;
                     for (Operation o : r.getCorps())
-                        if(!baseDeFait.contains(o))
                             baseDeFait.ajouter(o);
                 }
             }

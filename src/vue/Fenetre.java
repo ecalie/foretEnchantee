@@ -3,7 +3,6 @@ package vue;
 import controleur.ActionEffectuerCycle;
 import modele.Agent;
 import modele.Case;
-import modele.Objet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +11,7 @@ public class Fenetre extends JFrame {
 
     private Case[][] lesCases;
     private Agent agent;
+    private JPanel centre;
 
     public Fenetre(Case[][] lesCases, Agent agent) {
         super("Bienvenue dans la forête enchantée ...");
@@ -20,7 +20,8 @@ public class Fenetre extends JFrame {
         this.lesCases = lesCases;
         this.agent = agent;
 
-        this.add(new MapPanel(this.lesCases, this.agent), BorderLayout.CENTER);
+        this.centre = new MapPanel(this.lesCases, this.agent);
+        this.add(centre, BorderLayout.CENTER);
 
         JButton btn = new JButton("Effectuer un cycle");
         btn.addActionListener(new ActionEffectuerCycle(agent, this));
@@ -32,8 +33,9 @@ public class Fenetre extends JFrame {
     }
 
     public void majPositionAgent() {
-        this.add(new MapPanel(this.lesCases, this.agent), BorderLayout.CENTER);
-
+        this.remove(this.centre);
+        this.centre = new MapPanel(this.lesCases, this.agent);
+        this.add(this.centre, BorderLayout.CENTER);
         this.validate();
     }
 

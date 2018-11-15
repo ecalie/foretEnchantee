@@ -44,4 +44,11 @@ public class Fait {
         Fait f2 = (Fait) obj;
         return (f2.emplacement.equals(this.emplacement) && f2.certitude == this.certitude && f2.type == this.type);
     }
+
+    @Override
+    public String toString() {
+        return (this.certitude?"" : "!") + this.emplacement + " " + this.type;
+    }
+
+
 }
