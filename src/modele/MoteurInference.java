@@ -27,6 +27,8 @@ public class MoteurInference {
 
     public void genererRegles(Carte map){
 
+        this.regles.clear();
+
         for (int ligne = 0 ; ligne < 3 ; ligne++) {
             for (int colonne = 0; colonne < 3; colonne++) {
 
