@@ -17,8 +17,8 @@ public class MoteurInference {
             for (Case laCase : ligne) {
 
                 List<Case> voisines = map.voisines(laCase);
-                List<Fait> declencheurs = new List<Fait>();
-                List<Operation> corps = new List<Operation>();
+                ArrayList<Fait> declencheurs = new ArrayList<Fait>();
+                ArrayList<Operation> corps = new ArrayList<Operation>();
 
                 for (TypeFait typeDeclencheur : TypeFait.values() ){
 
@@ -28,7 +28,7 @@ public class MoteurInference {
                             laCase,
                             true,
                             true,
-                            typeDeclencheur,
+                            typeDeclencheur
                             );
 
                     declencheurs.add(faitDeclencheur);
@@ -40,16 +40,16 @@ public class MoteurInference {
                     switch(typeDeclencheur){
                         case Odeur:
                             typeOperation = TypeFait.Monstre; //si j'ai une odeur, j'ai potentiellement des monstres
-                            certitude = False;
+                            certitude = false;
                             break;
                         case Vent:
                             typeOperation = TypeFait.Crevasse; //si j'ai du vent j'ai potentiellement des crevasses
-                            certitude = False;
+                            certitude = false;
                             break;
                         case Vide:
                         default:
                             typeOperation = TypeFait.SansDanger; //si je n'ai rien, je n'ai rien à côté
-                            certitude = True;
+                            certitude = true;
                             break;
                     }
 
@@ -61,7 +61,7 @@ public class MoteurInference {
                                 laCase,
                                 true,
                                 certitude,
-                                typeOperation;
+                                typeOperation
                         );
 
                         Operation operation = new Operation(
@@ -79,12 +79,19 @@ public class MoteurInference {
     }
 
     public void appliquerRegles() {
-        for (RegleDeduction r : regles)
-            if (!r.isMarquee() && r.estApplicable(this.baseDeFait)) {
-                r.marquer();
-                for (Operation o : r.getCorps())
-                    baseDeFait.ajouter(o);
+        boolean onReboucle = true;
+        while(onReboucle) {
+            onReboucle=false;
+            for (RegleDeduction r : regles) {
+                if (!r.isMarquee() && r.estApplicable(this.baseDeFait)) {
+                    r.marquer();
+                    for (Operation o : r.getCorps())
+                        baseDeFait.ajouter(o);
+                    onReboucle=true;
+                }
             }
+        }
+
     }
 
 }

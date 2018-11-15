@@ -35,16 +35,50 @@ public class Agent {
         this.croyances = croyances;
     }
 
-    public Action choixAction() {
-        // Trouver une action sans risque
-        //      - chercher une case non visitée sans risque
+    public void majIntention() {
+        for (Fait f : this.croyances) {
+            if (f.getType() == TypeFait.SansDanger) {
+                this.intentions = determinationIntentions(f.getEmplacement());
+            }
+        }
+    }
 
-        //      - chercher un chemin
+    public ArrayList<Action> determinationIntentions( Case cible ) {
+        ArrayList<Action> _intention = new ArrayList<>();
+        ArrayList<Case> chemin;
+        chemin=exploration(this.position, cible, new ArrayList<>());
+        for (int i=0; i < chemin.size()-1; i++)
+            _intention.add(determinationAction(chemin.get(i), chemin.get(i+1)));
+        return _intention;
+    }
 
-        // Sinon tirer une roche
+    private ArrayList<Case> exploration (Case _position, Case _cible, ArrayList<Case> _chemin) {
+        if (_position.getLigne() == _cible.getLigne() && _position.getColonne() == _cible.getColonne())
+            return _chemin;
+        else {
+            for (int i=0; i < this.memoire.size(); i++) {
+                if (distance (_position, this.memoire.get(i)) == 1 && !_chemin.contains(new Case(this.memoire.get(i).getLigne(), this.memoire.get(i).getColonne()))) {
+                    _chemin.add(this.memoire.get(i));
+                    exploration(this.memoire.get(i), _cible, _chemin);
+                }
+            }
+        }
+        return null;
+    }
 
-        // Sinon prendre un risque dans une crevasse
+    private int distance (Case c1, Case c2) {
+        return Math.abs(c1.getLigne() - c2.getLigne()) + Math.abs(c1.getColonne() - c2.getColonne());
+    }
 
+    private Action determinationAction(Case c1, Case c2) {
+        if (c1.getLigne() - c2.getLigne() > 0)
+            return new Action(Type.Deplacer, Direction.Bas);
+        else if (c1.getLigne() - c2.getLigne() < 0)
+            return new Action(Type.Deplacer, Direction.Haut);
+        else if (c1.getColonne() - c2.getColonne() > 0)
+            return new Action(Type.Deplacer, Direction.Droite);
+        else if (c1.getColonne() - c2.getColonne() < 0)
+            return new Action(Type.Deplacer, Direction.Gauche);
         return null;
     }
 
@@ -58,10 +92,11 @@ public class Agent {
             //mettre à jour les croyances avec les cases déjà parcourues
 
             // Choix d'une action
-            Action a = this.choixAction();
+            majIntention();
 
             // Excéution de l'action
-            effecteur.executerAction(a);
+            while(!this.intentions.isEmpty())
+                effecteur.executerAction(this.intentions.get(0));
         }
     }
 }

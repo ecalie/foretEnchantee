@@ -46,4 +46,8 @@ public class Fait {
     public boolean isCertitude() {
         return certitude;
     }
+
+    public TypeFait getType() {
+        return type;
+    }
 }
