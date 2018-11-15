@@ -51,8 +51,8 @@ public class Environnement {
         // Générer le portail
         boolean portail = false;
         while (!portail) {
-            int ligne = (int) Math.random() * taille;
-            int colonne = (int) Math.random() * taille;
+            int ligne = (int) (Math.random() * taille);
+            int colonne = (int) (Math.random() * taille);
 
             if (!cases[ligne][colonne].getObjet().contains(Objet.Crevasse) && !cases[ligne][colonne].getObjet().contains(Objet.Monstre)) {
                 portail = true;

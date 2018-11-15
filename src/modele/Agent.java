@@ -22,11 +22,17 @@ public class Agent {
         this.desir = Objet.Lumiere;
         this.croyances = new BaseFaits();
         this.moteur = _moteur;
+        this.moteur.setBaseDeFait(this.croyances);
         this.memoire = new ArrayList<>();
+        this.memoire.add(this.position);
     }
 
     public Case getPosition() {
         return position;
+    }
+
+    public BaseFaits getCroyances() {
+        return croyances;
     }
 
     public void setPosition(Case position) {
@@ -45,21 +51,21 @@ public class Agent {
         }
     }
 
-    public ArrayList<Action> determinationIntentions( Case cible ) {
+    public ArrayList<Action> determinationIntentions(Case cible) {
         ArrayList<Action> _intention = new ArrayList<>();
         ArrayList<Case> chemin;
-        chemin=exploration(this.position, cible, new ArrayList<>());
-        for (int i=0; i < chemin.size()-1; i++)
-            _intention.add(determinationAction(chemin.get(i), chemin.get(i+1)));
+        chemin = exploration(this.position, cible, new ArrayList<>());
+        for (int i = 0; i < chemin.size() - 1; i++)
+            _intention.add(determinationAction(chemin.get(i), chemin.get(i + 1)));
         return _intention;
     }
 
-    private ArrayList<Case> exploration (Case _position, Case _cible, ArrayList<Case> _chemin) {
+    private ArrayList<Case> exploration(Case _position, Case _cible, ArrayList<Case> _chemin) {
         if (_position.getLigne() == _cible.getLigne() && _position.getColonne() == _cible.getColonne())
             return _chemin;
         else {
-            for (int i=0; i < this.memoire.size(); i++) {
-                if (distance (_position, this.memoire.get(i)) == 1 && !_chemin.contains(new Case(this.memoire.get(i).getLigne(), this.memoire.get(i).getColonne()))) {
+            for (int i = 0; i < this.memoire.size(); i++) {
+                if (distance(_position, this.memoire.get(i)) == 1 && !_chemin.contains(new Case(this.memoire.get(i).getLigne(), this.memoire.get(i).getColonne()))) {
                     _chemin.add(this.memoire.get(i));
                     exploration(this.memoire.get(i), _cible, _chemin);
                 }
@@ -68,7 +74,7 @@ public class Agent {
         return null;
     }
 
-    private int distance (Case c1, Case c2) {
+    private int distance(Case c1, Case c2) {
         return Math.abs(c1.getLigne() - c2.getLigne()) + Math.abs(c1.getColonne() - c2.getColonne());
     }
 
@@ -88,25 +94,29 @@ public class Agent {
         List<Objet> objets = this.capteur.getObjetCase(this.position);
         for (Objet o : objets)
             this.croyances.add(new Fait(this.position, null, true, o.getTypeFait()));
+
+        if (!objets.contains(Objet.Monstre) && !objets.contains(Objet.Crevasse))
+            this.croyances.add(new Fait(this.position, null, true, TypeFait.SansDanger));
+
         this.croyances.add(new Fait(this.position, null, true, TypeFait.Exploree));
 
     }
 
     public void bouger() {
-            // Appeler le capteur -> ajouter faits
-            this.observer();
+        // Appeler le capteur -> ajouter faits
+        this.observer();
 
-            // Execéute les règles applicables et mise à jour des croyances
-            this.moteur.appliquerRegles();
+        // Execéute les règles applicables et mise à jour des croyances
+        this.moteur.appliquerRegles();
 
-            // Choix d'une action
-            majIntention();
+        // Choix d'une action
+        majIntention();
 
-            // Excéution de l'action
-            effecteur.executerAction(a);
-            while(!this.intentions.isEmpty())
-                effecteur.executerAction(this.intentions.get(0));
-        }
+        // Excéution de l'action
+        while (!this.intentions.isEmpty())
+            effecteur.executerAction(this.intentions.get(0));
+
+        System.out.println(this.position);
     }
 
     public void ajouterRegles(Carte map) {

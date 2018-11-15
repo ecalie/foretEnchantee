@@ -31,4 +31,9 @@ public class Case {
         Case c2 = (Case) obj;
         return (c2.ligne == this.ligne && c2.colonne == this.colonne);
     }
+
+    @Override
+    public String toString() {
+        return "(" + this.ligne + ", " + this.colonne + ")";
+    }
 }

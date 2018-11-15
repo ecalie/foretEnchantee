@@ -38,4 +38,10 @@ public class Fait {
     public TypeFait getType() {
         return type;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Fait f2 = (Fait) obj;
+        return (f2.emplacement.equals(this.emplacement) && f2.certitude == this.certitude && f2.type == this.type);
+    }
 }

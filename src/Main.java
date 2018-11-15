@@ -8,7 +8,7 @@ public class Main {
         Environnement environnement = new Environnement(3);
 
         //initialiser les regles
-        MoteurInference moteur = new MoteurInference(environnement.getMap());
+        MoteurInference moteur = new MoteurInference(environnement.getMap(), null);
 
         System.out.println("regles");
         // générer agent
