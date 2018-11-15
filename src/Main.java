@@ -1,5 +1,5 @@
 import modele.*;
-import vue.Fenetre;
+//import vue.Fenetre;
 
 public class Main {
 
@@ -19,7 +19,7 @@ public class Main {
 
         environnement.setAgent(agent);
 
-        Fenetre f = new Fenetre(environnement.getMap().getLesCases(), agent);
-        //agent.demarrer();
+        //Fenetre f = new Fenetre(environnement.getMap().getLesCases(), agent);
+        agent.demarrer();
     }
 }

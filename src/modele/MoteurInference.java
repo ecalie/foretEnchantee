@@ -1,3 +1,5 @@
+package modele;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +49,6 @@ public class MoteurInference {
                     laCase,
                     laCase,
                     true,
-                    true,
                     typeDeclencheur
                     );
 
@@ -79,7 +80,6 @@ public class MoteurInference {
                 Fait faitOperation = new Fait(
                         voisine,
                         laCase,
-                        true,
                         certitude,
                         typeOperation
                         );
