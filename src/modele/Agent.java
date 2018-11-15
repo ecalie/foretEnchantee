@@ -56,8 +56,7 @@ public class Agent {
             this.croyances.add(new Fait(this.position, null, false, o.getTypeFait()));
     }
 
-    public void demarrer() {
-        while (true) {
+    public void bouger() {
             // Appeler le capteur -> ajouter faits
             this.observer();
 
@@ -69,7 +68,6 @@ public class Agent {
 
             // Excéution de l'action
             effecteur.executerAction(a);
-        }
     }
 
     public void ajouterRegles(Carte map) {

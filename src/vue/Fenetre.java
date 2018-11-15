@@ -1,5 +1,6 @@
 package vue;
 
+import controleur.ActionEffectuerCycle;
 import modele.Agent;
 import modele.Case;
 import modele.Objet;
@@ -38,6 +39,10 @@ public class Fenetre extends JFrame {
         }
 
         this.add(grille, BorderLayout.CENTER);
+
+        JButton btn = new JButton("Effectuer un cycle");
+        btn.addActionListener(new ActionEffectuerCycle(agent));
+        this.add(btn, BorderLayout.SOUTH);
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(new Dimension(400, 400));
