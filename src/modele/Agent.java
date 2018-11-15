@@ -74,20 +74,22 @@ public class Agent {
 
     private Action determinationAction(Case c1, Case c2) {
         if (c1.getLigne() - c2.getLigne() > 0)
-            return new Action(Type.Deplacer, Direction.Bas);
+            return new Action(TypeAction.Deplacer, Direction.Bas);
         else if (c1.getLigne() - c2.getLigne() < 0)
-            return new Action(Type.Deplacer, Direction.Haut);
+            return new Action(TypeAction.Deplacer, Direction.Haut);
         else if (c1.getColonne() - c2.getColonne() > 0)
-            return new Action(Type.Deplacer, Direction.Droite);
+            return new Action(TypeAction.Deplacer, Direction.Droite);
         else if (c1.getColonne() - c2.getColonne() < 0)
-            return new Action(Type.Deplacer, Direction.Gauche);
+            return new Action(TypeAction.Deplacer, Direction.Gauche);
         return null;
     }
 
     public void observer() {
         List<Objet> objets = this.capteur.getObjetCase(this.position);
         for (Objet o : objets)
-            this.croyances.add(new Fait(this.position, null, false, true, o.getTypeFait()));
+            this.croyances.add(new Fait(this.position, null, true, o.getTypeFait()));
+        this.croyances.add(new Fait(this.position, null, true, TypeFait.Exploree));
+
     }
 
     public void demarrer() {

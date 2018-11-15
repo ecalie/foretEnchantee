@@ -9,7 +9,6 @@ public class Action {
         this.direction = direction;
     }
 
-    public Type getType() {
     public TypeAction getType() {
         return type;
     }

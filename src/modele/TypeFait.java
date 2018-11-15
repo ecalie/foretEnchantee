@@ -1,7 +1,7 @@
 package modele;
 
 public enum TypeFait {
-    Cible,
+    Exploree,
     Vide,
     SansDanger,
     Crevasse,
