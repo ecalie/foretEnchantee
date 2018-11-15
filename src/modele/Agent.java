@@ -137,10 +137,17 @@ public class Agent {
             // Excéution de l'action
             while(!this.intentions.isEmpty())
                 effecteur.executerAction(this.intentions.get(0));
-
     }
 
     public void ajouterRegles(Carte map) {
         this.moteur.genererReglesNouvelleCarte(map);
+    }
+
+    public void setMemoire(List<Case> memoire) {
+        this.memoire = memoire;
+    }
+
+    public void ajoutFait(Fait fait) {
+        this.croyances.add(fait);
     }
 }

@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.ArrayList;
+
 public class Environnement {
 
     private Carte map;
@@ -82,6 +84,23 @@ public class Environnement {
     public void deplacerAgent(Direction direction) {
         // Mettre à jour position agent
         this.agent.setPosition(this.voisine(this.agent.getPosition(), direction));
+        if(agentEstMortCeSoir()) {
+            this.agent.ajoutFait(new Fait(this.agent.getPosition(), null, true, TypeFait.Crevasse));
+
+            this.agent.setPosition(this.map.getCase(0, 0));
+
+            ArrayList<Case> memoireReset = new ArrayList();
+            memoireReset.add(this.agent.getPosition());
+            this.agent.setMemoire(memoireReset);
+        }
+    }
+
+    private boolean agentEstMortCeSoir () {
+        if (this.map.getCase(this.agent.getPosition().getLigne(), this.agent.getPosition().getColonne()).getObjet().contains(Objet.Monstre)
+                || this.map.getCase(this.agent.getPosition().getLigne(), this.agent.getPosition().getColonne()).getObjet().contains(Objet.Crevasse))
+            return true;
+        else
+            return false;
     }
 
     public void tirer(Direction direction) {
