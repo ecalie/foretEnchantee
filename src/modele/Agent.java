@@ -39,18 +39,40 @@ public class Agent {
 
     public void majIntention() {
         for (Fait f : this.croyances) {
-            if (f.getType() == TypeFait.SansDanger) {
-                this.intentions = determinationIntentions(f.getEmplacement());
+            if (f.getType() == TypeFait.Lumiere) {
+                this.intentions.add(new Action(TypeAction.Sortir, null));
+                return;
             }
         }
+        for (Fait f : this.croyances) {
+            if (f.getType() == TypeFait.SansDanger) {
+                this.intentions = determinationDeplacements(f.getEmplacement());
+                return;
+            }
+        }
+        for (Fait f : this.croyances) {
+            if (f.getType() == TypeFait.Monstre) {
+                this.intentions = determinationDeplacements(f.getCause());
+                this.intentions.add(new Action(TypeAction.Tirer, determinationDirection(f.getCause(), f.getEmplacement())));
+                this.intentions.add(new Action(TypeAction.Deplacer, determinationDirection(f.getCause(), f.getEmplacement())));
+                return;
+            }
+        }
+        for (Fait f : this.croyances) {
+            if (f.getType() == TypeFait.Crevasse && !f.isCertitude()) {
+                this.intentions = determinationDeplacements(f.getEmplacement());
+                return;
+            }
+        }
+        System.out.print("Je suis mort");
     }
 
-    public ArrayList<Action> determinationIntentions( Case cible ) {
+    public ArrayList<Action> determinationDeplacements( Case cible ) {
         ArrayList<Action> _intention = new ArrayList<>();
         ArrayList<Case> chemin;
         chemin=exploration(this.position, cible, new ArrayList<>());
         for (int i=0; i < chemin.size()-1; i++)
-            _intention.add(determinationAction(chemin.get(i), chemin.get(i+1)));
+            _intention.add(new Action(TypeAction.Deplacer, determinationDirection(chemin.get(i), chemin.get(i+1))));
         return _intention;
     }
 
@@ -72,15 +94,15 @@ public class Agent {
         return Math.abs(c1.getLigne() - c2.getLigne()) + Math.abs(c1.getColonne() - c2.getColonne());
     }
 
-    private Action determinationAction(Case c1, Case c2) {
+    private Direction determinationDirection(Case c1, Case c2) {
         if (c1.getLigne() - c2.getLigne() > 0)
-            return new Action(TypeAction.Deplacer, Direction.Bas);
+            return Direction.Bas;
         else if (c1.getLigne() - c2.getLigne() < 0)
-            return new Action(TypeAction.Deplacer, Direction.Haut);
+            return Direction.Haut;
         else if (c1.getColonne() - c2.getColonne() > 0)
-            return new Action(TypeAction.Deplacer, Direction.Droite);
+            return Direction.Droite;
         else if (c1.getColonne() - c2.getColonne() < 0)
-            return new Action(TypeAction.Deplacer, Direction.Gauche);
+            return Direction.Gauche;
         return null;
     }
 
