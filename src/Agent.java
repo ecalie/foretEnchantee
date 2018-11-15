@@ -64,4 +64,8 @@ public class Agent {
             effecteur.executerAction(a);
         }
     }
+
+    public void ajouterRegles(Carte map) {
+        this.moteur.genererReglesNouvelleCarte(map);
+    }
 }

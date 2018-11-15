@@ -59,6 +59,9 @@ public class Environnement {
 
         // Réinitialiser les croyances de l'agent
         this.agent.setCroyances(new BaseFaits());
+
+        //Créer les règles des nouvelles cases
+        this.agent.ajouterRegles(this.map);
     }
 
     public void deplacerAgent(Direction direction) {
