@@ -121,8 +121,7 @@ public class MoteurInference {
                         faits.add(faitIncertain);
                         faits.add(faitCertain);
                         operations = new ArrayList<>();
-                        f = new Fait(emplacement, null, false, typeFaitIncertain);
-                        operations.add(new Operation(f, false));
+                        operations.add(new Operation(faitIncertain, false));
                         regle = new RegleDeduction(faits, operations);
                         this.regles.add(regle);
                     }

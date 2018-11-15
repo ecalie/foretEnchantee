@@ -12,6 +12,7 @@ public class Fenetre extends JFrame {
     private Case[][] lesCases;
     private Agent agent;
     private JPanel centre;
+    private JLabel ouest;
 
     public Fenetre(Case[][] lesCases, Agent agent) {
         super("Bienvenue dans la forête enchantée ...");
@@ -22,6 +23,8 @@ public class Fenetre extends JFrame {
 
         this.centre = new MapPanel(this.lesCases, this.agent);
         this.add(centre, BorderLayout.CENTER);
+
+        this.ouest = new JLabel("Je suis mort");
 
         JButton btn = new JButton("Effectuer un cycle");
         btn.addActionListener(new ActionEffectuerCycle(agent, this));
@@ -37,6 +40,13 @@ public class Fenetre extends JFrame {
         this.centre = new MapPanel(this.lesCases, this.agent);
         this.add(this.centre, BorderLayout.CENTER);
         this.validate();
+        this.remove(this.ouest);
     }
+
+    public void mourir() {
+        this.add(this.ouest, BorderLayout.WEST);
+    }
+
+
 
 }

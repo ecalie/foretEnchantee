@@ -84,8 +84,9 @@ public class Environnement {
         // Placer l'agent sur la map
         this.agent.setPosition(this.map.getCase(0, 0));
 
-        // Réinitialiser les croyances de l'agent
+        // Réinitialiser les croyances et la mémoire de l'agent
         this.agent.resetCroyances();
+        this.agent.resetMemoire();
 
         //Créer les règles des nouvelles cases
         this.agent.getMoteur().genererRegles(map);
@@ -100,13 +101,12 @@ public class Environnement {
         // Mettre à jour position agent
         this.agent.setPosition(this.voisine(this.agent.getPosition(), direction));
         if(agentEstMortCeSoir()) {
+            this.fenetre.mourir();
             this.agent.ajoutFait(new Fait(this.agent.getPosition(), null, true, TypeFait.Crevasse));
 
             this.agent.setPosition(this.map.getCase(0, 0));
 
-            ArrayList<Case> memoireReset = new ArrayList();
-            memoireReset.add(this.agent.getPosition());
-            this.agent.setMemoire(memoireReset);
+            this.agent.resetMemoire();
         }
     }
 

@@ -67,6 +67,8 @@ public class Agent {
                 this.croyances.remove(new Fait(f.getEmplacement(), null, false,TypeFait.Monstre));
                 this.croyances.remove(new Fait(f.getEmplacement(), null, true,TypeFait.Monstre));
                 this.intentions.add(new Action(TypeAction.Deplacer, determinationDirection(f.getCause(), f.getEmplacement())));
+                if (!memoire.contains( f.getEmplacement()))
+                    this.memoire.add( f.getEmplacement());
                 return;
             }
         }
@@ -166,5 +168,10 @@ public class Agent {
 
     public void ajoutFait(Fait fait) {
         this.croyances.add(fait);
+    }
+
+    public void resetMemoire() {
+        this.memoire.clear();
+        this.memoire.add(this.position);
     }
 }
