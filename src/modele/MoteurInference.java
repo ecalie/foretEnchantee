@@ -84,8 +84,8 @@ public class MoteurInference {
                 this.regles.add(regle);
 
                 ///////////////////////////////////////////////////////////////////////////////
-                // Règle  : SI sans (danger ou monstre ou crevasse potentiels) ET sansDanger //
-                //             ALORS on supprime  (danger ou monstre ou crevasse potentiels) //
+                // Règle  : SI (sans danger ou (monstre ou crevasse potentiel )) ET Explorée //
+                //             ALORS on supprime  (danger ou monstre ou crevasse potentiel)  //
                 ///////////////////////////////////////////////////////////////////////////////
                 for (TypeFait type : Arrays.asList(TypeFait.Monstre, TypeFait.Crevasse, TypeFait.SansDanger)) {
                     faits = new ArrayList<>();
