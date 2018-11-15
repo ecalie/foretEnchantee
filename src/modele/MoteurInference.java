@@ -1,6 +1,8 @@
 package modele;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MoteurInference {
@@ -23,141 +25,94 @@ public class MoteurInference {
     }
 
     public void genererRegles(Carte map){
-        //      - Si une case est vide, alors les cases voisines non ni crevasse ni monstre
-        for (int ligne = 0 ; ligne < 3 ; ligne++) {
-            for (int colonne = 0 ; colonne < 3 ; colonne++) {
-                Case emplacement = map.getCase(ligne, colonne);
-                Fait fait = new Fait(emplacement, null,  true,TypeFait.Vide);
-                List<Fait> faits = new ArrayList<>();
-                faits.add(fait);
-                List<Operation> operations = new ArrayList<>();
-                for (Case c : map.voisines(emplacement)) {
-                    Fait f = new Fait(c, emplacement,  true, TypeFait.SansDanger);
-                    operations.add(new Operation(f, true));
-                }
-                RegleDeduction regle = new RegleDeduction(faits, operations);
-                this.regles.add(regle);
-            }
-        }
 
-        //      - Si une case contient du vent, il peut y a voir une crevasse dans les cases voisines
-        for (int ligne = 0 ; ligne < 3 ; ligne++) {
-            for (int colonne = 0 ; colonne < 3 ; colonne++) {
-                Case emplacement = map.getCase(ligne, colonne);
-                Fait fait = new Fait(emplacement, null,  true, TypeFait.Vent);
-                List<Fait> faits = new ArrayList<>();
-                faits.add(fait);
-                List<Operation> operations = new ArrayList<>();
-                for (Case c : map.voisines(emplacement)) {
-                    Fait f = new Fait(c, emplacement,  false, TypeFait.Crevasse);
-                    operations.add(new Operation(f, true));
-                }
-                RegleDeduction regle = new RegleDeduction(faits, operations);
-                this.regles.add(regle);
-            }
-        }
-
-        //      - Si une case contient du caca, il peut y a voir un monstre dans les cases voisines
         for (int ligne = 0 ; ligne < 3 ; ligne++) {
             for (int colonne = 0; colonne < 3; colonne++) {
+
                 Case emplacement = map.getCase(ligne, colonne);
-                Fait fait = new Fait(emplacement, null,  true, TypeFait.Odeur);
+                List<Case> voisines = map.voisines(emplacement);
+
+                ////////////////////////////////////////////////////////////////////////
+                // Règle  : SI odeur                                                  //
+                //             ALORS potentiellement monstre sur les cases voisines   //
+                ////////////////////////////////////////////////////////////////////////
+                Fait fait = new Fait(emplacement, null, true, TypeFait.Odeur);
                 List<Fait> faits = new ArrayList<>();
                 faits.add(fait);
                 List<Operation> operations = new ArrayList<>();
-                for (Case c : map.voisines(emplacement)) {
-                    Fait f = new Fait(c, emplacement,  false, TypeFait.Monstre);
+                for (Case c : voisines) {
+                    Fait f = new Fait(c, emplacement, false, TypeFait.Monstre);
                     operations.add(new Operation(f, true));
                 }
                 RegleDeduction regle = new RegleDeduction(faits, operations);
                 this.regles.add(regle);
-            }
-        }
 
-        // Une case explorée n'est pas sans danger
-        for (int ligne = 0 ; ligne < 3 ; ligne++) {
-            for (int colonne = 0; colonne < 3; colonne++) {
-                Case emplacement = map.getCase(ligne, colonne);
-                Fait fait = new Fait(emplacement, null,  true, TypeFait.Exploree);
-                List<Fait> faits = new ArrayList<>();
+                ////////////////////////////////////////////////////////////////////////
+                // Règle  : SI vent                                                   //
+                //             ALORS potentiellement crevasse sur les cases voisines  //
+                ////////////////////////////////////////////////////////////////////////
+                fait = new Fait(emplacement, null, true, TypeFait.Vent);
+                faits = new ArrayList<>();
                 faits.add(fait);
-                List<Operation> operations = new ArrayList<>();
-                    Fait f = new Fait(emplacement, null,  true, TypeFait.SansDanger);
-                    operations.add(new Operation(f, false));
-                RegleDeduction regle = new RegleDeduction(faits, operations);
+                operations = new ArrayList<>();
+                for (Case c : voisines) {
+                    Fait f = new Fait(c, emplacement, false, TypeFait.Crevasse);
+                    operations.add(new Operation(f, true));
+                }
+                regle = new RegleDeduction(faits, operations);
                 this.regles.add(regle);
-            }
-        }
-    }
 
-    public void genererReglesNouvelleCarte(Carte map){
-        int taille = map.getTaille();
-        for (int t=0; t<taille; t++){
-            Case laCase = map.getCase(t,taille);
-            genererReglesSurCase(laCase, map.voisines(laCase));
-            if(t!=taille-1)
-                laCase = map.getCase(taille,t);
-                genererReglesSurCase(laCase, map.voisines(laCase));
-        }
-    }
 
-    public void genererReglesSurCase(Case laCase, List<Case> voisines){
-        List<Fait> declencheurs = new ArrayList<Fait>();
-        List<Operation> corps = new ArrayList<Operation>();
-
-        for (TypeFait typeDeclencheur : TypeFait.values() ){
-
-            //Identification du fait déclencheur
-            Fait faitDeclencheur = new Fait(
-                    laCase,
-                    laCase,
-                    true,
-                    typeDeclencheur
-                    );
-
-            declencheurs.add(faitDeclencheur);
-
-            //Identification des faits causés par le déclencheur
-            TypeFait typeOperation;
-            boolean certitude;
-
-            switch(typeDeclencheur){
-                case Odeur:
-                    typeOperation = TypeFait.Monstre; //si j'ai une odeur, j'ai potentiellement des monstres
-                    certitude = false;
-                    break;
-                case Vent:
-                    typeOperation = TypeFait.Crevasse; //si j'ai du vent j'ai potentiellement des crevasses
-                    certitude = false;
-                    break;
-                case Vide:
-                default:
-                    typeOperation = TypeFait.SansDanger; //si je n'ai rien, je n'ai rien à côté
-                    certitude = true;
-                    break;
-            }
-
-            //On crée les faits causés pour chaque case voisine
-            for (Case voisine : voisines) {
-
-                Fait faitOperation = new Fait(
-                        voisine,
-                        laCase,
-                        certitude,
-                        typeOperation
-                        );
-
-                Operation operation = new Operation(
-                        faitOperation,
-                        true
-                );
-
-                corps.add(operation);
-                RegleDeduction regle = new RegleDeduction(declencheurs, corps);
+                ////////////////////////////////////////////////////////////////////////
+                // Règle  : SI vide                                                   //
+                //             ALORS les cases voisines sans danger                   //
+                ////////////////////////////////////////////////////////////////////////
+                fait = new Fait(emplacement, null, true, TypeFait.Vide);
+                faits = new ArrayList<>();
+                faits.add(fait);
+                operations = new ArrayList<>();
+                for (Case c : voisines) {
+                    Fait f = new Fait(c, emplacement, true, TypeFait.SansDanger);
+                    operations.add(new Operation(f, true));
+                }
+                regle = new RegleDeduction(faits, operations);
                 this.regles.add(regle);
+
+                ////////////////////////////////////////////////////////////////////////
+                // Règle  : SI sans danger ET exploree                                //
+                //             ALORS plus nécessaire d'être identifée "sans danger"   //
+                ////////////////////////////////////////////////////////////////////////
+                fait = new Fait(emplacement, null, true, TypeFait.Exploree);
+                faits = new ArrayList<>();
+                faits.add(fait);
+                fait = new Fait(emplacement, null, true, TypeFait.SansDanger);
+                faits.add(fait);
+                operations = new ArrayList<>();
+                Fait f = new Fait(emplacement, null, true, TypeFait.SansDanger);
+                operations.add(new Operation(f, false));
+                regle = new RegleDeduction(faits, operations);
+                this.regles.add(regle);
+
+                ////////////////////////////////////////////////////////////////////////
+                // Règle  : SI fait incertain ET fait certain                         //
+                //             ALORS fait certain                                     //
+                ////////////////////////////////////////////////////////////////////////
+                for (TypeFait typeFaitIncertain : Arrays.asList(TypeFait.Crevasse, TypeFait.Monstre)) {
+                    Fait faitIncertain = new Fait(emplacement, null, false, typeFaitIncertain);
+                    for (TypeFait typeFaitCertain : Arrays.asList(TypeFait.Crevasse, TypeFait.Monstre, TypeFait.SansDanger)) {
+                        Fait faitCertain = new Fait(emplacement, null, true, typeFaitCertain);
+                        faits = new ArrayList<>();
+                        faits.add(faitIncertain);
+                        faits.add(faitCertain);
+                        operations = new ArrayList<>();
+                        f = new Fait(emplacement, null, false, typeFaitIncertain);
+                        operations.add(new Operation(f, false));
+                        regle = new RegleDeduction(faits, operations);
+                        this.regles.add(regle);
+                    }
+                }
             }
         }
-
     }
 
     public void appliquerRegles() {
