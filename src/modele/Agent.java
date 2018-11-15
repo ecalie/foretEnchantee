@@ -43,10 +43,6 @@ public class Agent {
         this.position = position;
     }
 
-    public BaseFaits getCroyances() {
-        return croyances;
-    }
-
     public void resetCroyances() {
         this.croyances = new BaseFaits();
     }
@@ -84,7 +80,10 @@ public class Agent {
     public ArrayList<Action> determinationDeplacements( Case cible ) {
         ArrayList<Action> _intention = new ArrayList<>();
         ArrayList<Case> chemin;
-        chemin=exploration(this.position, cible, new ArrayList<>());
+        this.memoire.add(cible);
+        ArrayList<Case> cheminInitial = new ArrayList<>();
+        cheminInitial.add(this.position);
+        chemin=exploration(this.position, cible, cheminInitial);
         for (int i=0; i < chemin.size()-1; i++)
             _intention.add(new Action(TypeAction.Deplacer, determinationDirection(chemin.get(i), chemin.get(i+1))));
         return _intention;
@@ -97,7 +96,7 @@ public class Agent {
             for (int i=0; i < this.memoire.size(); i++) {
                 if (distance (_position, this.memoire.get(i)) == 1 && !_chemin.contains(new Case(this.memoire.get(i).getLigne(), this.memoire.get(i).getColonne()))) {
                     _chemin.add(this.memoire.get(i));
-                    exploration(this.memoire.get(i), _cible, _chemin);
+                    return exploration(this.memoire.get(i), _cible, _chemin);
                 }
             }
         }
@@ -125,7 +124,7 @@ public class Agent {
         for (Objet o : objets)
             this.croyances.add(new Fait(this.position, null, true, o.getTypeFait()));
 
-        if (!objets.contains(Objet.Monstre) && !objets.contains(Objet.Crevasse))
+        if (objets.size() == 0)
             this.croyances.add(new Fait(this.position, null, true, TypeFait.Vide));
 
         this.croyances.add(new Fait(this.position, null, true, TypeFait.Exploree));

@@ -19,7 +19,7 @@ public class Main {
 
         environnement.setAgent(agent);
 
-        Fenetre f = new Fenetre(environnement.getMap().getLesCases(), agent);
-       // agent.demarrer();
+        Fenetre fenetre = new Fenetre(environnement.getMap().getLesCases(), agent);
+       environnement.setFenetre(fenetre);
     }
 }

@@ -8,9 +8,14 @@ public class Environnement {
 
     private Carte map;
     private Agent agent;
+    private Fenetre fenetre;
 
     public Environnement(int taille) {
         this.genererMap(taille);
+    }
+
+    public void setFenetre(Fenetre fenetre) {
+        this.fenetre = fenetre;
     }
 
     public void setAgent(Agent agent) {
@@ -55,6 +60,7 @@ public class Environnement {
                     for (Case c : map.voisines(cases[ligne][colonne]))
                         c.getObjet().add(Objet.Odeur);
 
+
         // Générer le portail
         boolean portail = false;
         while (!portail) {
@@ -66,9 +72,6 @@ public class Environnement {
                 cases[ligne][colonne].getObjet().add(Objet.Lumiere);
             }
         }
-
-        if (agent != null)
-            new Fenetre(cases, agent);
     }
 
     public void sortirAgent() {
@@ -85,7 +88,12 @@ public class Environnement {
         this.agent.resetCroyances();
 
         //Créer les règles des nouvelles cases
-        this.agent.getMoteur().genererReglesNouvelleCarte(map);
+        this.agent.getMoteur().genererRegles(map);
+
+        // Afficher la map
+        this.fenetre.hide();
+        this.fenetre = new Fenetre(this.map.getLesCases(), this.agent);
+        this.fenetre.validate();
     }
 
     public void deplacerAgent(Direction direction) {
