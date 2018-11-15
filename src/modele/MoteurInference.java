@@ -1,3 +1,5 @@
+package modele;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,19 +8,22 @@ public class MoteurInference {
     private BaseFaits baseDeFait;
     private List<RegleDeduction> regles;
 
-    public MoteurInference(BaseFaits _base, Carte map) {
-        this.baseDeFait = _base;
+    public MoteurInference(Carte map) {
+        this.baseDeFait = new BaseFaits();
         genererRegles(map);
     }
 
+    public BaseFaits getBaseDeFait() {
+        return baseDeFait;
+    }
 
     public void genererRegles(Carte map){
         for (Case[] ligne : map.getLesCases()) {
             for (Case laCase : ligne) {
 
                 List<Case> voisines = map.voisines(laCase);
-                List<Fait> declencheurs = new List<Fait>();
-                List<Operation> corps = new List<Operation>();
+                List<Fait> declencheurs = new ArrayList<Fait>();
+                List<Operation> corps = new ArrayList<Operation>();
 
                 for (TypeFait typeDeclencheur : TypeFait.values() ){
 
@@ -28,8 +33,7 @@ public class MoteurInference {
                             laCase,
                             true,
                             true,
-                            typeDeclencheur,
-                            );
+                            typeDeclencheur);
 
                     declencheurs.add(faitDeclencheur);
 
@@ -40,16 +44,16 @@ public class MoteurInference {
                     switch(typeDeclencheur){
                         case Odeur:
                             typeOperation = TypeFait.Monstre; //si j'ai une odeur, j'ai potentiellement des monstres
-                            certitude = False;
+                            certitude = false;
                             break;
                         case Vent:
                             typeOperation = TypeFait.Crevasse; //si j'ai du vent j'ai potentiellement des crevasses
-                            certitude = False;
+                            certitude = false;
                             break;
                         case Vide:
                         default:
                             typeOperation = TypeFait.SansDanger; //si je n'ai rien, je n'ai rien à côté
-                            certitude = True;
+                            certitude = true;
                             break;
                     }
 
@@ -61,7 +65,7 @@ public class MoteurInference {
                                 laCase,
                                 true,
                                 certitude,
-                                typeOperation;
+                                typeOperation
                         );
 
                         Operation operation = new Operation(
