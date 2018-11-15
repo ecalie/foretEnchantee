@@ -1,3 +1,5 @@
+package modele;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +33,8 @@ public class Agent {
         this.position = position;
     }
 
-    public void setCroyances(BaseFaits croyances) {
-        this.croyances = croyances;
+    public void resetCroyances() {
+        this.croyances = new BaseFaits();
     }
 
     public Action choixAction() {
@@ -48,14 +50,19 @@ public class Agent {
         return null;
     }
 
+    public void observer() {
+        List<Objet> objets = this.capteur.getObjetCase(this.position);
+        for (Objet o : objets)
+            this.croyances.add(new Fait(this.position, null, false, true, o.getTypeFait()));
+    }
+
     public void demarrer() {
         while (true) {
-            //Appeler le capteur -> ajouter faits
+            // Appeler le capteur -> ajouter faits
+            this.observer();
 
             // Execéute les règles applicables et mise à jour des croyances
             this.moteur.appliquerRegles();
-
-            //mettre à jour les croyances avec les cases déjà parcourues
 
             // Choix d'une action
             Action a = this.choixAction();

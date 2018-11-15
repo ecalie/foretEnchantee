@@ -1,3 +1,5 @@
+package modele;
+
 public class Operation {
 
     private Fait fait;

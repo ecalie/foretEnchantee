@@ -1,3 +1,5 @@
+package modele;
+
 public class Fait {
 
     private Case emplacement;
@@ -6,26 +8,22 @@ public class Fait {
     /**
      * Vrai si le fait est la présence l'objet, faux si le fait est l'absence de l'objet.
      */
-    private boolean present;
+    private boolean negation;
 
     /**
      * Vrai la présence / absence est une certitude, faux si c'est une hypothèse.
      */
     private boolean certitude;
 
-    /**
-     * Monstre  ou crevasse ou lumière.
-     */
     private TypeFait type;
 
-    public Fait(Case emplacement, Case cause, boolean present, boolean certitude, TypeFait type) {
-        this.emplacement = emplacement;
-        this.cause = cause;
-        this.present = present;
-        this.certitude = certitude;
-        this.type = type;
+    public Fait(Case _emplacement, Case _cause, boolean _negation, boolean _certitude, TypeFait _type) {
+        this.emplacement = _emplacement;
+        this.cause = _cause;
+        this.negation = _negation;
+        this.certitude = _certitude;
+        this.type = _type;
     }
-
 
     /////////////
     // GETTERS //
@@ -39,11 +37,15 @@ public class Fait {
         return cause;
     }
 
-    public boolean isPresent() {
-        return present;
+    public boolean isNegation() {
+        return negation;
     }
 
     public boolean isCertitude() {
         return certitude;
+    }
+
+    public TypeFait getType() {
+        return type;
     }
 }

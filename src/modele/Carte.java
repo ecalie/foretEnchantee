@@ -1,3 +1,5 @@
+package modele;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,10 @@ public class Carte {
 
     public int getTaille() {
         return this.lesCases.length;
+    }
+
+    public Case[][] getLesCases() {
+        return lesCases;
     }
 
     public List<Case> voisines(Case laCase) {
@@ -29,8 +35,6 @@ public class Carte {
 
         return res;
     }
-
-    public Case[][] getLesCases() { return lesCases; }
 
     public Case getCase(int ligne, int colonne) {
         return this.lesCases[ligne][colonne];

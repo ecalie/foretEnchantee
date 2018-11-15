@@ -6,11 +6,14 @@ public class MoteurInference {
     private BaseFaits baseDeFait;
     private List<RegleDeduction> regles;
 
-    public MoteurInference(BaseFaits _base, Carte map) {
-        this.baseDeFait = _base;
+    public MoteurInference(Carte map) {
+        this.baseDeFait = new BaseFaits();
         genererRegles(map);
     }
 
+    public BaseFaits getBaseDeFait() {
+        return baseDeFait;
+    }
 
     public void genererRegles(Carte map){
         for (Case[] ligne : map.getLesCases()) {

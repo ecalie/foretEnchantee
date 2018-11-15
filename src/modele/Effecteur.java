@@ -1,3 +1,5 @@
+package modele;
+
 public class Effecteur {
 
     private Environnement environnement;
