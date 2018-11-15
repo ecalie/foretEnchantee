@@ -14,6 +14,10 @@ public class Environnement {
         this.genererMap(taille);
     }
 
+    ////////////////////////
+    // GETTERS ET SETTERS //
+    ////////////////////////
+
     public Agent getAgent() {
         return agent;
     }
@@ -38,6 +42,9 @@ public class Environnement {
         return map;
     }
 
+    /**
+     * Générer une carte d'une certaine taille.
+     */
     public void genererMap(int taille) {
         Case[][] cases = new Case[taille][taille];
         for (int ligne = 0; ligne < taille; ligne++) {
@@ -82,6 +89,9 @@ public class Environnement {
         }
     }
 
+    /**
+     * Faire sortir l'agent de la carte et le placer dans la suivante.
+     */
     public void sortirAgent() {
         // Calculer le score
         // TODO
@@ -105,6 +115,9 @@ public class Environnement {
         this.fenetre.validate();
     }
 
+    /**
+     * Faire déplacer l'agent sur la carte.
+     */
     public void deplacerAgent(Direction direction) {
         // Mettre à jour position agent
         this.agent.setPosition(this.voisine(this.agent.getPosition(), direction));
@@ -116,14 +129,19 @@ public class Environnement {
         }
     }
 
+    /**
+     * Vrai si l'agent est sur une crevasse (il ne peut pas rencontrer de monstre car tire toujours avant).
+     */
     private boolean agentEstMortCeSoir () {
-        if (this.map.getCase(this.agent.getPosition().getLigne(), this.agent.getPosition().getColonne()).getObjet().contains(Objet.Monstre)
-                || this.map.getCase(this.agent.getPosition().getLigne(), this.agent.getPosition().getColonne()).getObjet().contains(Objet.Crevasse))
+        if ( this.map.getCase(this.agent.getPosition().getLigne(), this.agent.getPosition().getColonne()).getObjet().contains(Objet.Crevasse))
             return true;
         else
             return false;
     }
 
+    /**
+     * Faire tirer l'agent sur une case voisine de sa position.
+     */
     public void tirer(Direction direction) {
         // La case sur la quelle l'agent tire
         Case visee = this.voisine(this.agent.getPosition(), direction);
@@ -136,6 +154,9 @@ public class Environnement {
         // TODO
     }
 
+    /**
+     * Récupérer la case voisine d'une case selon une direction.
+     */
     public Case voisine(Case laCase, Direction direction) {
         int l = laCase.getLigne();
         int c = laCase.getColonne();

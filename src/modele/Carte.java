@@ -19,6 +19,13 @@ public class Carte {
         return lesCases;
     }
 
+    public Case getCase(int ligne, int colonne) {
+        return this.lesCases[ligne][colonne];
+    }
+
+    /**
+     * Récupérer toutes les cases voisines d'une case.
+     */
     public List<Case> voisines(Case laCase) {
         List<Case> res = new ArrayList<>();
         int l = laCase.getLigne();
@@ -34,9 +41,5 @@ public class Carte {
             res.add(lesCases[l][c + 1]);
 
         return res;
-    }
-
-    public Case getCase(int ligne, int colonne) {
-        return this.lesCases[ligne][colonne];
     }
 }

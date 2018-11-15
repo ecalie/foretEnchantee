@@ -25,6 +25,9 @@ public class MoteurInference {
         this.baseDeFait = baseDeFait;
     }
 
+    /**
+     * Générer toutes les règles.
+     */
     public void genererRegles(Carte map){
 
         this.regles.clear();
@@ -116,6 +119,10 @@ public class MoteurInference {
         }
     }
 
+    /**
+     * Appliquer toutes les règles possibles.
+     * Les règles sont "démarquées" car une règle peut être supprimée une nouvelle fois si elle a été ajoutée.
+     */
     public void appliquerRegles() {
         // démarquer toutes les règles
         for (RegleDeduction r : this.regles)
