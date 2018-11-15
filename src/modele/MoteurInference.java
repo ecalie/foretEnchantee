@@ -161,12 +161,18 @@ public class MoteurInference {
     }
 
     public void appliquerRegles() {
-        for (RegleDeduction r : regles)
-            if (!r.isMarquee() && r.estApplicable(this.baseDeFait)) {
-                r.marquer();
-                for (Operation o : r.getCorps())
-                    baseDeFait.ajouter(o);
+        boolean onBoucle=true;
+        while (onBoucle) {
+            onBoucle = false;
+            for (RegleDeduction r : regles) {
+                if (!r.isMarquee() && r.estApplicable(this.baseDeFait)) {
+                    r.marquer();
+                    onBoucle = true;
+                    for (Operation o : r.getCorps())
+                        baseDeFait.ajouter(o);
+                }
             }
+        }
     }
 
 }
