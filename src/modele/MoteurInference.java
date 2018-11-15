@@ -126,7 +126,8 @@ public class MoteurInference {
                     r.marquer();
                     onBoucle = true;
                     for (Operation o : r.getCorps())
-                        baseDeFait.ajouter(o);
+                        if(!baseDeFait.contains(o))
+                            baseDeFait.ajouter(o);
                 }
             }
         }
