@@ -46,6 +46,9 @@ public class CasePanel extends JPanel {
 
     }
 
+    public void setComposante(int l, int c, String image) {
+        this.composantes[l][c].setIcon(new ImageIcon(image));
+    }
 
 
 }

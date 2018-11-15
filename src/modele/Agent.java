@@ -27,6 +27,10 @@ public class Agent {
         this.memoire.add(this.position);
     }
 
+    public MoteurInference getMoteur() {
+        return moteur;
+    }
+
     public Case getPosition() {
         return position;
     }
@@ -37,6 +41,10 @@ public class Agent {
 
     public void setPosition(Case position) {
         this.position = position;
+    }
+
+    public BaseFaits getCroyances() {
+        return croyances;
     }
 
     public void resetCroyances() {
@@ -96,18 +104,18 @@ public class Agent {
         return null;
     }
 
-    private int distance (Case c1, Case c2) {
+    private int distance(Case c1, Case c2) {
         return Math.abs(c1.getLigne() - c2.getLigne()) + Math.abs(c1.getColonne() - c2.getColonne());
     }
 
     private Direction determinationDirection(Case c1, Case c2) {
-        if (c1.getLigne() - c2.getLigne() > 0)
+        if (c1.getLigne() - c2.getLigne() < 0)
             return Direction.Bas;
-        else if (c1.getLigne() - c2.getLigne() < 0)
+        else if (c1.getLigne() - c2.getLigne() > 0)
             return Direction.Haut;
-        else if (c1.getColonne() - c2.getColonne() > 0)
-            return Direction.Droite;
         else if (c1.getColonne() - c2.getColonne() < 0)
+            return Direction.Droite;
+        else if (c1.getColonne() - c2.getColonne() > 0)
             return Direction.Gauche;
         return null;
     }
@@ -118,15 +126,16 @@ public class Agent {
             this.croyances.add(new Fait(this.position, null, true, o.getTypeFait()));
 
         if (!objets.contains(Objet.Monstre) && !objets.contains(Objet.Crevasse))
-            this.croyances.add(new Fait(this.position, null, true, TypeFait.SansDanger));
+            this.croyances.add(new Fait(this.position, null, true, TypeFait.Vide));
 
         this.croyances.add(new Fait(this.position, null, true, TypeFait.Exploree));
 
     }
 
     public void bouger() {
-        // Appeler le capteur -> ajouter faits
-        this.observer();
+        if (this.intentions.isEmpty()) {
+            // Appeler le capteur -> ajouter faits
+            this.observer();
 
             // Execéute les règles applicables et mise à jour des croyances
             this.moteur.appliquerRegles();
@@ -135,12 +144,13 @@ public class Agent {
             majIntention();
 
             // Excéution de l'action
-            while(!this.intentions.isEmpty())
-                effecteur.executerAction(this.intentions.get(0));
-    }
+            effecteur.executerAction(this.intentions.remove(0));
+        } else {
+            effecteur.executerAction(this.intentions.remove(0));
+        }
 
-    public void ajouterRegles(Carte map) {
-        this.moteur.genererReglesNouvelleCarte(map);
+        System.out.println(this.position);
+
     }
 
     public void setMemoire(List<Case> memoire) {

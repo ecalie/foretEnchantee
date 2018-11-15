@@ -1,5 +1,7 @@
 package modele;
 
+import vue.Fenetre;
+
 import java.util.ArrayList;
 
 public class Environnement {
@@ -38,6 +40,9 @@ public class Environnement {
             }
         }
 
+        // supprimer les éléments dangeureux de la case (0,0)
+        cases[0][0].getObjet().clear();
+
         this.map = new Carte(cases);
 
         // générer vent et odeur
@@ -62,6 +67,8 @@ public class Environnement {
             }
         }
 
+        if (agent != null)
+            new Fenetre(cases, agent);
     }
 
     public void sortirAgent() {
@@ -78,7 +85,7 @@ public class Environnement {
         this.agent.resetCroyances();
 
         //Créer les règles des nouvelles cases
-        this.agent.ajouterRegles(this.map);
+        this.agent.getMoteur().genererReglesNouvelleCarte(map);
     }
 
     public void deplacerAgent(Direction direction) {

@@ -4,7 +4,7 @@ import vue.Fenetre;
 public class Main {
 
     public static void main(String[] args) {
-        // génrer environnement
+        // générer environnement
         Environnement environnement = new Environnement(3);
 
         //initialiser les regles
