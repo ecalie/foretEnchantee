@@ -101,7 +101,7 @@ public class MoteurInference {
                 ////////////////////////////////////////////////////////////////////////
                 for (TypeFait typeFaitIncertain : Arrays.asList(TypeFait.Crevasse, TypeFait.Monstre)) {
                     Fait faitIncertain = new Fait(emplacement, null, false, typeFaitIncertain);
-                    for (TypeFait typeFaitCertain : Arrays.asList(TypeFait.Crevasse, TypeFait.Monstre, TypeFait.SansDanger)) {
+                    for (TypeFait typeFaitCertain : Arrays.asList(TypeFait.Crevasse, TypeFait.Monstre, TypeFait.SansDanger, TypeFait.Vide)) {
                         Fait faitCertain = new Fait(emplacement, null, true, typeFaitCertain);
                         faits = new ArrayList<>();
                         faits.add(faitIncertain);
