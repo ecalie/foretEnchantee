@@ -100,7 +100,7 @@ public class Environnement {
      */
     public void sortirAgent() {
         // Calculer le score
-        this.scoreAgent += this.getMap().getTaille() * this.getMap().getTaille();
+        this.scoreAgent += 10 * this.getMap().getTaille() * this.getMap().getTaille();
 
         // Générer une map plus grande
         this.genererMap(this.map.getTaille() + 1);
@@ -127,8 +127,9 @@ public class Environnement {
     public void deplacerAgent(Direction direction) {
         // Mettre à jour position agent
         this.agent.setPosition(this.voisine(this.agent.getPosition(), direction));
+        this.scoreAgent -= 1;
         if(agentEstMortCeSoir()) {
-            this.scoreAgent -= this.getMap().getTaille() * this.getMap().getTaille();
+            this.scoreAgent -= 10 * this.getMap().getTaille() * this.getMap().getTaille();
             this.fenetre.mourir();
             this.agent.ajoutFait(new Fait(this.agent.getPosition(), null, true, TypeFait.Crevasse));
             this.agent.getMemoire().remove(this.agent.getPosition());
