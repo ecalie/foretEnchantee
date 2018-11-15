@@ -96,13 +96,26 @@ public class MoteurInference {
                 regle = new RegleDeduction(faits, operations);
                 this.regles.add(regle);
 
+                for (Case voisine : voisines) {
+                    fait = new Fait(voisine, null, true, TypeFait.Exploree);
+                    faits = new ArrayList<>();
+                    faits.add(fait);
+                    fait = new Fait(voisine, null, true, TypeFait.SansDanger);
+                    faits.add(fait);
+                    operations = new ArrayList<>();
+                    f = new Fait(voisine, null, true, TypeFait.SansDanger);
+                    operations.add(new Operation(f, false));
+                    regle = new RegleDeduction(faits, operations);
+                    this.regles.add(regle);
+                }
+
                 ////////////////////////////////////////////////////////////////////////
                 // Règle  : SI fait incertain ET fait certain                         //
                 //             ALORS fait certain                                     //
                 ////////////////////////////////////////////////////////////////////////
                 for (TypeFait typeFaitIncertain : Arrays.asList(TypeFait.Crevasse, TypeFait.Monstre)) {
                     Fait faitIncertain = new Fait(emplacement, null, false, typeFaitIncertain);
-                    for (TypeFait typeFaitCertain : Arrays.asList(TypeFait.Crevasse, TypeFait.Monstre, TypeFait.SansDanger)) {
+                    for (TypeFait typeFaitCertain : Arrays.asList(TypeFait.Crevasse, TypeFait.Monstre, TypeFait.SansDanger, TypeFait.Vide)) {
                         Fait faitCertain = new Fait(emplacement, null, true, typeFaitCertain);
                         faits = new ArrayList<>();
                         faits.add(faitIncertain);
@@ -127,7 +140,6 @@ public class MoteurInference {
                     r.marquer();
                     onBoucle = true;
                     for (Operation o : r.getCorps())
-                        if(!baseDeFait.contains(o))
                             baseDeFait.ajouter(o);
                 }
             }

@@ -35,16 +35,16 @@ public class Agent {
         return position;
     }
 
-    public BaseFaits getCroyances() {
-        return croyances;
-    }
-
     public void setPosition(Case position) {
         this.position = position;
     }
 
+    public BaseFaits getCroyances() {
+        return croyances;
+    }
+
     public void resetCroyances() {
-        this.croyances = new BaseFaits();
+        this.croyances.clear();
     }
 
     public void majIntention() {
@@ -64,6 +64,8 @@ public class Agent {
             if (f.getType() == TypeFait.Monstre) {
                 this.intentions = determinationDeplacements(f.getCause());
                 this.intentions.add(new Action(TypeAction.Tirer, determinationDirection(f.getCause(), f.getEmplacement())));
+                this.croyances.remove(new Fait(f.getEmplacement(), null, false,TypeFait.Monstre));
+                this.croyances.remove(new Fait(f.getEmplacement(), null, true,TypeFait.Monstre));
                 this.intentions.add(new Action(TypeAction.Deplacer, determinationDirection(f.getCause(), f.getEmplacement())));
                 return;
             }
@@ -77,26 +79,32 @@ public class Agent {
         System.out.print("Je suis mort");
     }
 
-    public ArrayList<Action> determinationDeplacements( Case cible ) {
+    public ArrayList<Action> determinationDeplacements(Case cible) {
         ArrayList<Action> _intention = new ArrayList<>();
         ArrayList<Case> chemin;
-        this.memoire.add(cible);
+        if (!memoire.contains(cible))
+            this.memoire.add(cible);
         ArrayList<Case> cheminInitial = new ArrayList<>();
         cheminInitial.add(this.position);
-        chemin=exploration(this.position, cible, cheminInitial);
-        for (int i=0; i < chemin.size()-1; i++)
-            _intention.add(new Action(TypeAction.Deplacer, determinationDirection(chemin.get(i), chemin.get(i+1))));
+        chemin = exploration(this.position, cible, cheminInitial);
+        for (int i = 0; i < chemin.size() - 1; i++)
+            _intention.add(new Action(TypeAction.Deplacer, determinationDirection(chemin.get(i), chemin.get(i + 1))));
         return _intention;
     }
 
-    private ArrayList<Case> exploration (Case _position, Case _cible, ArrayList<Case> _chemin) {
+    private ArrayList<Case> exploration(Case _position, Case _cible, ArrayList<Case> _chemin) {
         if (_position.getLigne() == _cible.getLigne() && _position.getColonne() == _cible.getColonne())
             return _chemin;
         else {
-            for (int i=0; i < this.memoire.size(); i++) {
-                if (distance (_position, this.memoire.get(i)) == 1 && !_chemin.contains(new Case(this.memoire.get(i).getLigne(), this.memoire.get(i).getColonne()))) {
+            for (int i = 0; i < this.memoire.size(); i++) {
+                if (distance(_position, this.memoire.get(i)) == 1 && !_chemin.contains(new Case(this.memoire.get(i).getLigne(), this.memoire.get(i).getColonne()))) {
                     _chemin.add(this.memoire.get(i));
-                    return exploration(this.memoire.get(i), _cible, _chemin);
+                    ArrayList<Case> res = exploration(this.memoire.get(i), _cible, _chemin);
+                    if (res == null) {
+                        _chemin.remove(this.memoire.get(i));
+                    } else {
+                        return res;
+                    }
                 }
             }
         }
